@@ -8,6 +8,13 @@ based on their signature. The type of the file doesn't need to be specified.
 
 Because it's annoying to learn all the tar and zip commands.
 
+## Installation
+
+You can install this crate using cargo.
+
+```sh
+cargo install universal-archiver
+```
 
 ## Usage
 
