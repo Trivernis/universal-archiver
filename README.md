@@ -24,6 +24,22 @@ SUBCOMMANDS:
     help       Print this message or the help of the given subcommand(s)
 ```
 
+## Extract
+
+```sh
+Extracts a given file
+
+USAGE:
+    universal-archiver extract <FILE> [OUTPUT]
+
+ARGS:
+    <FILE>      The file to extract
+    <OUTPUT>    The output folder for the given file
+
+OPTIONS:
+    -h, --help    Print help information
+```
+
 ## License
 
 MIT

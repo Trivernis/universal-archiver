@@ -6,7 +6,7 @@ use tracing_subscriber::EnvFilter;
 use universal_archiver::format::{parse_format, FileFormat};
 
 #[derive(Debug, Clone, Parser)]
-#[clap(name="extract-archive", version=env!("CARGO_PKG_VERSION"), about=env!("CARGO_PKG_DESCRIPTION"))]
+#[clap(name="universal-archiver", version=env!("CARGO_PKG_VERSION"), about=env!("CARGO_PKG_DESCRIPTION"))]
 struct Args {
     /// The operation to perform
     #[clap(subcommand)]
