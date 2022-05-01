@@ -1,12 +1,16 @@
 [package]
-name = "extract-archive"
+name = "universal-archiver"
+description = "A tool to unpack archives without having to specify the archive type."
+repository = "https://github.com/Trivernis/universal-archiver.git"
+authors = ["Trivernis <trivernis@pm.me>"]
 version = "0.1.0"
 edition = "2021"
+keywords = ["compression", "extract-archive", "archiver", "cli"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [[bin]]
-name = "extract-archive"
+name = "universal-archiver"
 
 [dependencies]
 anyhow = "1.0.57"
@@ -14,6 +18,9 @@ color-eyre = "0.6.1"
 tracing = "0.1.34"
 zip = "0.6.2"
 lzma-rs = "0.2.0"
+libflate = "1.2.0"
+tar = "0.4.38"
+tempfile = "3.3.0"
 tracing-subscriber = {version = "0.3.11", features = ["env-filter"]}
 
 [dependencies.clap]

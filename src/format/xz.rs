@@ -1,7 +1,6 @@
 use crate::format::{FileFormat, FileObject};
 use anyhow::{bail, Context};
 use std::fs::File;
-use std::io;
 use std::io::BufReader;
 use std::path::Path;
 
@@ -12,8 +11,7 @@ pub struct XZFormat;
 impl FileFormat for XZFormat {
     fn parse(file: &FileObject) -> anyhow::Result<Self> {
         if file.header.starts_with(XZ_HEADER) {
-            if !file.ext.ends_with("xz") && !file.ext.ends_with("lzma") && !file.ext.ends_with("7z")
-            {
+            if !file.ext.ends_with(".xz") && !file.ext.ends_with(".lzma") {
                 tracing::warn!("The file has a xz signature but not a xz extension.");
             }
             Ok(Self)

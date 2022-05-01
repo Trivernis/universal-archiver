@@ -1,7 +1,10 @@
+mod gzip;
 mod tar;
 mod xz;
 mod zip;
 
+use crate::format::gzip::GZipFormat;
+use crate::format::tar::TarFormat;
 use crate::format::xz::XZFormat;
 use crate::format::zip::ZipFormat;
 use anyhow::{bail, Result};
@@ -12,8 +15,8 @@ use std::path::Path;
 pub enum Format {
     Zip(ZipFormat),
     Xz(XZFormat),
-    Gz,
-    Tar,
+    Gz(GZipFormat),
+    Tar(TarFormat),
 }
 
 pub struct FileObject {
@@ -31,9 +34,15 @@ impl FileFormat for Format {
         if let Ok(zip) = ZipFormat::parse(file) {
             tracing::info!("Detected zip format");
             Ok(Self::Zip(zip))
+        } else if let Ok(tar) = TarFormat::parse(file) {
+            tracing::info!("Detected tar format");
+            Ok(Self::Tar(tar))
         } else if let Ok(xz) = XZFormat::parse(file) {
             tracing::info!("Detected xz format");
             Ok(Self::Xz(xz))
+        } else if let Ok(gz) = GZipFormat::parse(file) {
+            tracing::info!("Detected gzip format");
+            Ok(Self::Gz(gz))
         } else {
             bail!("Unknown file format");
         }
@@ -43,7 +52,8 @@ impl FileFormat for Format {
         match self {
             Format::Zip(zip) => zip.extract(file, output),
             Format::Xz(xz) => xz.extract(file, output),
-            _ => bail!("Not implemented"),
+            Format::Gz(gz) => gz.extract(file, output),
+            Format::Tar(tar) => tar.extract(file, output),
         }
     }
 }
@@ -64,9 +74,12 @@ pub fn parse_format(file: &Path) -> Result<Format> {
 /// just using the extensions for format detection that behaviour isn't a problem.
 fn get_file_extensions(path: &Path) -> Option<String> {
     let name = path.file_name()?.to_string_lossy();
-    let extensions: Vec<&str> = name.split('.').skip(1).collect();
+    let extensions: String = name
+        .split('.')
+        .skip(1)
+        .fold(String::new(), |acc, val| format!("{acc}.{val}"));
 
-    Some(extensions.join("."))
+    Some(extensions)
 }
 
 /// Returns the first 32 bytes of the file that can be used to detect

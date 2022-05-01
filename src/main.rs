@@ -1,10 +1,9 @@
 use clap::{Parser, Subcommand};
-use extract_archive::format::{parse_format, FileFormat};
-use std::fs;
 use std::path::PathBuf;
 use std::str::FromStr;
 use tracing_subscriber::fmt::format::FmtSpan;
 use tracing_subscriber::EnvFilter;
+use universal_archiver::format::{parse_format, FileFormat};
 
 #[derive(Debug, Clone, Parser)]
 #[clap(name="extract-archive", version=env!("CARGO_PKG_VERSION"), about=env!("CARGO_PKG_DESCRIPTION"))]
@@ -22,7 +21,7 @@ pub enum Operation {
         file: PathBuf,
 
         /// The output folder for the given file
-        output: PathBuf,
+        output: Option<PathBuf>,
     },
 }
 
@@ -33,6 +32,11 @@ fn main() {
     match args.operation {
         Operation::Extract { output, file } => {
             let format = parse_format(&file).expect("Failed to parse file format");
+            let output = output.unwrap_or_else(|| {
+                file.file_stem()
+                    .map(PathBuf::from)
+                    .unwrap_or_else(|| PathBuf::from("out"))
+            });
             format
                 .extract(&file, &output)
                 .expect("Failed to extract file");

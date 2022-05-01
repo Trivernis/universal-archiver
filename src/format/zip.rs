@@ -12,7 +12,7 @@ pub struct ZipFormat;
 impl FileFormat for ZipFormat {
     fn parse(file: &FileObject) -> Result<Self> {
         if file.header.starts_with(ZIP_HEADER) {
-            if !file.ext.ends_with("zip") {
+            if !file.ext.ends_with(".zip") {
                 tracing::warn!("The file has a zip signature but no zip extension.");
             }
             Ok(Self)
