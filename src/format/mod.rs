@@ -1,5 +1,8 @@
+mod tar;
+mod xz;
 mod zip;
 
+use crate::format::xz::XZFormat;
 use crate::format::zip::ZipFormat;
 use anyhow::{bail, Result};
 use std::fs::File;
@@ -8,7 +11,7 @@ use std::path::Path;
 
 pub enum Format {
     Zip(ZipFormat),
-    Xz,
+    Xz(XZFormat),
     Gz,
     Tar,
 }
@@ -26,7 +29,11 @@ pub trait FileFormat: Sized {
 impl FileFormat for Format {
     fn parse(file: &FileObject) -> Result<Self> {
         if let Ok(zip) = ZipFormat::parse(file) {
+            tracing::info!("Detected zip format");
             Ok(Self::Zip(zip))
+        } else if let Ok(xz) = XZFormat::parse(file) {
+            tracing::info!("Detected xz format");
+            Ok(Self::Xz(xz))
         } else {
             bail!("Unknown file format");
         }
@@ -35,6 +42,7 @@ impl FileFormat for Format {
     fn extract(&self, file: &Path, output: &Path) -> Result<()> {
         match self {
             Format::Zip(zip) => zip.extract(file, output),
+            Format::Xz(xz) => xz.extract(file, output),
             _ => bail!("Not implemented"),
         }
     }

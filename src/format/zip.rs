@@ -22,6 +22,9 @@ impl FileFormat for ZipFormat {
     }
 
     fn extract(&self, file: &Path, output: &Path) -> Result<()> {
+        if output.is_file() {
+            bail!("The given output is a file");
+        }
         let file = File::open(file)?;
         let mut archive = ZipArchive::new(file).context("Opening zip file")?;
         tracing::info!("Zip file with {} entries", archive.len());

@@ -4,4 +4,6 @@
 *.gz
 *.xz
 *.zip
+test.txt
 out
+out.txt

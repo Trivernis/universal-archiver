@@ -13,6 +13,7 @@ anyhow = "1.0.57"
 color-eyre = "0.6.1"
 tracing = "0.1.34"
 zip = "0.6.2"
+lzma-rs = "0.2.0"
 tracing-subscriber = {version = "0.3.11", features = ["env-filter"]}
 
 [dependencies.clap]

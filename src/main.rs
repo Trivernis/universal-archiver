@@ -32,12 +32,6 @@ fn main() {
     let args: Args = Args::parse();
     match args.operation {
         Operation::Extract { output, file } => {
-            if !output.exists() {
-                fs::create_dir_all(&output).expect("Failed to create output directory");
-            }
-            if output.is_file() {
-                panic!("The given output path is a file");
-            }
             let format = parse_format(&file).expect("Failed to parse file format");
             format
                 .extract(&file, &output)
