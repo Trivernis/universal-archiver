@@ -35,7 +35,7 @@ fn main() {
             let output = output.unwrap_or_else(|| {
                 file.file_stem()
                     .map(PathBuf::from)
-                    .unwrap_or_else(|| PathBuf::from("out"))
+                    .unwrap_or_else(|| PathBuf::from("../../out"))
             });
             format
                 .extract(&file, &output)

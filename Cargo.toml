@@ -3,15 +3,13 @@ name = "universal-archiver"
 description = "A tool to unpack archives without having to specify the archive type."
 repository = "https://github.com/Trivernis/universal-archiver.git"
 authors = ["Trivernis <trivernis@pm.me>"]
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 keywords = ["compression", "extract-archive", "archiver", "cli"]
 license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[[bin]]
-name = "universal-archiver"
 
 [dependencies]
 anyhow = "1.0.57"

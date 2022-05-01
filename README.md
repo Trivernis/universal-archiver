@@ -20,7 +20,7 @@ cargo install universal-archiver
 
 ```sh
 USAGE:
-    universal-archiver <SUBCOMMAND>
+    ua <SUBCOMMAND>
 
 OPTIONS:
     -h, --help       Print help information
@@ -37,7 +37,7 @@ SUBCOMMANDS:
 Extracts a given file
 
 USAGE:
-    universal-archiver extract <FILE> [OUTPUT]
+    ua extract <FILE> [OUTPUT]
 
 ARGS:
     <FILE>      The file to extract
