@@ -16,6 +16,7 @@ struct Args {
 #[derive(Debug, Clone, Subcommand)]
 pub enum Operation {
     /// Extracts a given file
+    #[clap(aliases=&["x"])]
     Extract {
         /// The file to extract
         file: PathBuf,
