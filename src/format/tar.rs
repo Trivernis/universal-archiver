@@ -1,7 +1,6 @@
 use crate::format::gzip::GZipFormat;
 use crate::format::xz::XZFormat;
 use crate::format::{FileFormat, FileObject};
-use crate::utils::xz_decoder::XzDecoder;
 use anyhow::{bail, Context};
 use libflate::gzip;
 use std::fs::File;
@@ -48,8 +47,11 @@ impl FileFormat for TarFormat {
         let mut reader = BufReader::new(File::open(file).context("Opening input")?);
         match self {
             TarFormat::Xz => {
-                let mut decoder = XzDecoder::new(reader);
-                extract_tar(&mut decoder, output)
+                tracing::debug!("Creating memory mapped file");
+                tracing::debug!("Decompressing into memorys");
+                let mut buf = Vec::new();
+                lzma_rs::xz_decompress(&mut reader, &mut buf).context("Decompressing file")?;
+                extract_tar(&mut &buf[..], output)
             }
             TarFormat::Gz => {
                 let mut decoder = gzip::Decoder::new(&mut reader).context("Creating decoder")?;
